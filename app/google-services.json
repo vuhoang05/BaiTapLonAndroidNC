@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "551441600043",
+    "firebase_url": "https://btlandroid-51c8e-default-rtdb.firebaseio.com",
+    "project_id": "btlandroid-51c8e",
+    "storage_bucket": "btlandroid-51c8e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551441600043:android:fec76c2cee31461e4fe46e",
+        "android_client_info": {
+          "package_name": "com.example.baitaplon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCubxEeit6RRfjxJtwBkIXU-IGiJ7LRKU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
