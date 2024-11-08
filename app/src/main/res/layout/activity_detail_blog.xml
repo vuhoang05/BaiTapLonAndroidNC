@@ -141,7 +141,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:backgroundTint="@color/pimary"
-                    android:text="Gọi điện ngay"
+                    android:text="Gọi điện"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/btnlocaiton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/pimary"
+                    android:text="Xem vị trí"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />

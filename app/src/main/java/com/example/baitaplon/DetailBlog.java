@@ -1,30 +1,47 @@
 package com.example.baitaplon;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 import com.example.baitaplon.Domain.Blog;
 import com.example.baitaplon.databinding.ActivityDetailBlogBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class DetailBlog extends AppCompatActivity {
     ActivityDetailBlogBinding binding;
     private TextView title, description, address, price, area, numberOfRooms, houseType, contact;
     private ImageView image;
-    private Button buttonCall, buttonText,btnBack;
+    private Button buttonCall, buttonText, btnBack, btnLocation;
     private String contactNumber;
+    private FusedLocationProviderClient fusedLocationClient;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +62,9 @@ public class DetailBlog extends AppCompatActivity {
         buttonCall = findViewById(R.id.button_call);
         buttonText = findViewById(R.id.button_text);
         btnBack = findViewById(R.id.btnBack);
+        btnLocation = findViewById(R.id.btnlocaiton);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Lấy ID bài đăng từ Intent
         String blogId = getIntent().getStringExtra("BLOG_ID");
@@ -80,7 +100,7 @@ public class DetailBlog extends AppCompatActivity {
             });
         }
 
-        // Nút gọi điẹn
+        // Nút nhắn tin
         buttonText.setOnClickListener(v -> {
             if (contactNumber != null) {
                 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
@@ -97,12 +117,53 @@ public class DetailBlog extends AppCompatActivity {
                 startActivity(callIntent);
             }
         });
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DetailBlog.this, MainActivity.class);
-                startActivity(intent);
+
+        // Nút quay lại
+        btnBack.setOnClickListener(view -> {
+            Intent intent = new Intent(DetailBlog.this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        // Nút vị trí
+        btnLocation.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(DetailBlog.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(DetailBlog.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            } else {
+                // Lấy vị trí hiện tại của người dùng
+                fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+                    if (location != null) {
+                        double userLatitude = location.getLatitude();
+                        double userLongitude = location.getLongitude();
+
+                        // Lấy tọa độ của trọ dựa vào địa chỉ
+                        String addressText = address.getText().toString();
+                        Geocoder geocoder = new Geocoder(DetailBlog.this);
+                        try {
+                            List<Address> addressList = geocoder.getFromLocationName(addressText, 1);
+                            if (addressList != null && !addressList.isEmpty()) {
+                                Address trọAddress = addressList.get(0);
+                                double trọLatitude = trọAddress.getLatitude();
+                                double trọLongitude = trọAddress.getLongitude();
+
+                                // Mở TestMap và truyền tọa độ của trọ và người dùng vào
+                                Intent mapIntent = new Intent(DetailBlog.this, TestMap.class);
+                                mapIntent.putExtra("userLatitude", userLatitude);
+                                mapIntent.putExtra("userLongitude", userLongitude);
+                                mapIntent.putExtra("trọLatitude", trọLatitude);
+                                mapIntent.putExtra("trọLongitude", trọLongitude);
+                                startActivity(mapIntent);
+                            } else {
+                                Toast.makeText(DetailBlog.this, "Không tìm thấy vị trí của trọ từ địa chỉ", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(DetailBlog.this, "Lỗi khi chuyển đổi địa chỉ thành vị trí", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(DetailBlog.this, "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
+
 }

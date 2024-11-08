@@ -41,6 +41,7 @@ public class Register extends AppCompatActivity {
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
+
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
         // Set up button click listener

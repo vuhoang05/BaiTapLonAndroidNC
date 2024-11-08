@@ -4,6 +4,7 @@ public class User {
     public String uid;
     public String email;
     public String password;
+
     public User() {
         // Default constructor
     }

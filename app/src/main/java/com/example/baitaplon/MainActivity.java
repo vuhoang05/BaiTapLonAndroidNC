@@ -66,6 +66,12 @@ private ActivityMainBinding binding;
                 startActivity(new Intent(MainActivity.this, Login.class));
             }
         });
+        binding.btnTestMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, TestMap.class));
+            }
+        });
         binding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

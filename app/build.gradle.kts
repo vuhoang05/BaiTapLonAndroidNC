@@ -33,6 +33,7 @@ android {
     buildFeatures{
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -46,8 +47,13 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.firebase.storage)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation (libs.glide)
+    implementation (libs.glide);
+    // Add these dependencies for Maps and Location
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+
+
 }
