@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.baitaplon.Apdapter.BlogAdapter;
+import com.example.baitaplon.Apdapter.HouseTypesAdapter;
 import com.example.baitaplon.Domain.Blog;
+import com.example.baitaplon.Domain.houseTypes;
 import com.example.baitaplon.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -41,23 +43,9 @@ private ActivityMainBinding binding;
         mAuth = FirebaseAuth.getInstance();
         initBlogs();
         setVariable();
-
+        initHouseTypes();
     }
     private void setVariable() {
-       /* //set ten nguoi dung
-        DatabaseReference dataRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("email");
-        dataRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String nameCurrentUser = snapshot.getValue(String.class);
-                binding.nameCurrentUser.setText(nameCurrentUser+"");
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
 
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,12 +54,7 @@ private ActivityMainBinding binding;
                 startActivity(new Intent(MainActivity.this, Login.class));
             }
         });
-        binding.btnTestMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, TestMap.class));
-            }
-        });
+
         binding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,25 +83,41 @@ private ActivityMainBinding binding;
             }*/
        /* });*/
     }
+    private void initHouseTypes(){
+        DatabaseReference myRef = database.getReference("houseType");
+        binding.progressBarhouseTypes.setVisibility(View.VISIBLE);
+        ArrayList<houseTypes> list = new ArrayList<>();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    list.clear();
+                    for (DataSnapshot issue : snapshot.getChildren()) {
+                        houseTypes hT = issue.getValue(houseTypes.class);
+                        if (hT != null) {
+                            hT.setHouseTypeId(issue.getKey()); // Set ID cho blog
+                            list.add(hT);
+                        }
+                    }
+                    if (!list.isEmpty()) {
+                        binding.recyclerHouseTypes.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                        RecyclerView.Adapter adapter = new HouseTypesAdapter(list);
+                        binding.recyclerHouseTypes.setAdapter(adapter);
+                    }
+                    binding.progressBarhouseTypes.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void initBlogs(){
         DatabaseReference myRef = database.getReference("Blogs");
         binding.progressBarBlogs.setVisibility(View.VISIBLE);
         ArrayList<Blog> list = new ArrayList<>();
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    for(DataSnapshot issue : snapshot.getChildren()){
-//                        list.add(issue.getValue(Blog.class));
-//                    }
-//                    if(list.size()>0){
-//                        binding.recyclerBlogs.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
-//                        RecyclerView.Adapter adapter = new BlogAdapter(list);
-//                        binding.recyclerBlogs.setAdapter(adapter);
-//                    }
-//                    binding.progressBarBlogs.setVisibility(View.GONE);
-//                }
-//            }
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -79,7 +79,6 @@ public class Login extends AppCompatActivity {
                         });
             }
         });
-
         // Chuyển đến màn hình đăng ký
         registerNow.setOnClickListener(new View.OnClickListener() {
             @Override

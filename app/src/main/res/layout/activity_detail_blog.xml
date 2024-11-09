@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".DetailBlog">
     >
 
@@ -20,13 +21,33 @@
             android:padding="16dp">
 
             <!-- Image of the post -->
-            <Button
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center_vertical">
+
+            <ImageView
                 android:id="@+id/btnBack"
-                android:layout_width="100dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="0dp"
+                android:src="@drawable/baseline_arrow_back_24"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="5dp"
+                app:tint="@color/pimary" />
+            <TextView
+
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Trở lại"
                 android:textSize="16sp"
-                android:backgroundTint="@color/pimary"/>
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:text="Chi tiết thông tin "
+                android:textColor="@color/pimary"/>
+        </LinearLayout>
             <ImageView
                 android:id="@+id/detail_image"
                 android:layout_width="match_parent"
@@ -35,6 +56,7 @@
                 />
 
             <!-- Title -->
+
             <TextView
                 android:id="@+id/detail_title"
                 android:layout_width="wrap_content"
@@ -43,19 +65,24 @@
                 android:text="Title of the Post"
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                android:layout_marginStart="20dp"
                 android:textStyle="bold" />
 
-            <!-- Description -->
-            <TextView
-                android:id="@+id/detail_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Description of the post"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center_vertical">
 
-            <!-- Address -->
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/location"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/grey2" />
             <TextView
                 android:id="@+id/detail_address"
                 android:layout_width="wrap_content"
@@ -64,18 +91,65 @@
                 android:text="Address: 123 Main Street"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+        </LinearLayout>
+
+
 
             <!-- Price -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="7dp"
+                android:src="@drawable/dollar"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/red" />
             <TextView
                 android:id="@+id/detail_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Price: 3,000,000 VND"
+                android:textColor="@color/red"
+                android:textSize="16sp" />
+        </LinearLayout>
+            <!-- Description -->
+            <TextView
+                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:id="@+id/detail_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:height="100dp"
+                android:background="@drawable/rounded_background"
+                android:text="Description of the post"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
             <!-- Area -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/size"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/grey2" />
             <TextView
                 android:id="@+id/detail_area"
                 android:layout_width="wrap_content"
@@ -84,8 +158,23 @@
                 android:text="Area: 25 m²"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
+        </LinearLayout>
             <!-- Number of Rooms -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/location"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/grey2" />
             <TextView
                 android:id="@+id/detail_number_of_rooms"
                 android:layout_width="wrap_content"
@@ -94,8 +183,23 @@
                 android:text="Number of Rooms: 1"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
+        </LinearLayout>
             <!-- House Type -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/khampha"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/grey2" />
             <TextView
                 android:id="@+id/detail_house_type"
                 android:layout_width="wrap_content"
@@ -104,17 +208,32 @@
                 android:text="House Type: Nhà trọ"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
+        </LinearLayout>
             <!-- Contact Info -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/phone_call"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/grey2" />
             <TextView
                 android:id="@+id/detail_contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Contact: 0901234567"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
+        </LinearLayout>
             <!-- Button to Call -->
             <LinearLayout
                 android:layout_width="match_parent"

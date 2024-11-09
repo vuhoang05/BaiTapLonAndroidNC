@@ -40,6 +40,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.viewHolder> {
     @Override
     public void onBindViewHolder(@NonNull BlogAdapter.viewHolder holder, int position) {
         holder.titleBlog.setText(blogs.get(position).getTitle());
+        holder.area.setText(blogs.get(position).getArea()+"m2");
         holder.price_txt.setText(blogs.get(position).getPrice()+" vnd");
         holder.address.setText("Địa chỉ:"+blogs.get(position).getAddress());
         Glide.with(context)
@@ -47,9 +48,6 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.viewHolder> {
                 .transform(new CenterCrop(), new RoundedCorners(20))
                 .into(holder.img);
         // Set OnClickListener for image and title
-
-
-        /////////////////
         View.OnClickListener detailClickListener = v -> {
             Intent intent = new Intent(context, DetailBlog.class);
             intent.putExtra("BLOG_ID", blogs.get(position).getPostID()); // Truyền ID của blog sang DetailActivity
@@ -68,7 +66,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.viewHolder> {
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        TextView titleBlog, price_txt, address;
+        TextView titleBlog, price_txt, address,area;
         ImageView img;
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +74,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.viewHolder> {
             price_txt = itemView.findViewById(R.id.price_txt);
             address = itemView.findViewById(R.id.address);
             img = itemView.findViewById(R.id.img);
+            area = itemView.findViewById(R.id.areaText);
         }
     }
 }

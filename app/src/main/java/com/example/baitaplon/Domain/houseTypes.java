@@ -2,22 +2,32 @@ package com.example.baitaplon.Domain;
 
 public class houseTypes {
 
-    private int houseTypeId;
+    private String houseTypeId;
     private String houseTypeName;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public houseTypes() {
     }
 
-    public houseTypes(int houseTypeId, String houseTypeName) {
+    public houseTypes(String houseTypeId, String houseTypeName, String imageUrl) {
         this.houseTypeId = houseTypeId;
         this.houseTypeName = houseTypeName;
+        this.imageUrl = imageUrl;
     }
 
-    public int getHouseTypeId() {
+    public String getHouseTypeId() {
         return houseTypeId;
     }
 
-    public void setHouseTypeId(int houseTypeId) {
+    public void setHouseTypeId(String houseTypeId) {
         this.houseTypeId = houseTypeId;
     }
 

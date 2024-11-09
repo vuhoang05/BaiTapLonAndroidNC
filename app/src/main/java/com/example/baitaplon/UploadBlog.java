@@ -1,5 +1,6 @@
 package com.example.baitaplon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.baitaplon.Domain.Blog;
 import com.example.baitaplon.Domain.houseTypes;
+import com.example.baitaplon.databinding.ActivityBlogBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,9 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class UploadBlog extends AppCompatActivity {
+    private ActivityBlogBinding binding;
     private EditText titleEditText, descriptionEditText, priceEditText, areaEditText, numberOfRoomEditText, phoneNumberEditText, imageUrlEditText, addressEditText;
     private Spinner houseTypeSpinner;
-    private Button postBlogButton;
+    private Button postBlogButton,btnBack;
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference, houseTypeReference;
@@ -57,7 +60,7 @@ public class UploadBlog extends AppCompatActivity {
         postBlogButton = findViewById(R.id.postBlog);
         phoneNumberEditText = findViewById(R.id.phoneNumber);
         addressEditText = findViewById(R.id.address);
-
+        btnBack = findViewById(R.id.btnBack);
         // Khởi tạo Firebase và các tham chiếu
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Blogs");  // Tham chiếu tới Blogs
@@ -87,6 +90,13 @@ public class UploadBlog extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 Toast.makeText(UploadBlog.this, "Lỗi khi tải loại nhà từ Firebase", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UploadBlog.this, MainActivity.class));
             }
         });
 

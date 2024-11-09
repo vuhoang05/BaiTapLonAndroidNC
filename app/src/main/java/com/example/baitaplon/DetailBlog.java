@@ -36,9 +36,10 @@ import java.util.List;
 
 public class DetailBlog extends AppCompatActivity {
     ActivityDetailBlogBinding binding;
+
     private TextView title, description, address, price, area, numberOfRooms, houseType, contact;
-    private ImageView image;
-    private Button buttonCall, buttonText, btnBack, btnLocation;
+    private ImageView image,btnBack;
+    private Button buttonCall, buttonText, btnLocation;
     private String contactNumber;
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -129,41 +130,58 @@ public class DetailBlog extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(DetailBlog.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(DetailBlog.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
             } else {
-                // Lấy vị trí hiện tại của người dùng
-                fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-                    if (location != null) {
-                        double userLatitude = location.getLatitude();
-                        double userLongitude = location.getLongitude();
-
-                        // Lấy tọa độ của trọ dựa vào địa chỉ
-                        String addressText = address.getText().toString();
-                        Geocoder geocoder = new Geocoder(DetailBlog.this);
-                        try {
-                            List<Address> addressList = geocoder.getFromLocationName(addressText, 1);
-                            if (addressList != null && !addressList.isEmpty()) {
-                                Address trọAddress = addressList.get(0);
-                                double trọLatitude = trọAddress.getLatitude();
-                                double trọLongitude = trọAddress.getLongitude();
-
-                                // Mở TestMap và truyền tọa độ của trọ và người dùng vào
-                                Intent mapIntent = new Intent(DetailBlog.this, TestMap.class);
-                                mapIntent.putExtra("userLatitude", userLatitude);
-                                mapIntent.putExtra("userLongitude", userLongitude);
-                                mapIntent.putExtra("trọLatitude", trọLatitude);
-                                mapIntent.putExtra("trọLongitude", trọLongitude);
-                                startActivity(mapIntent);
-                            } else {
-                                Toast.makeText(DetailBlog.this, "Không tìm thấy vị trí của trọ từ địa chỉ", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(DetailBlog.this, "Lỗi khi chuyển đổi địa chỉ thành vị trí", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(DetailBlog.this, "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                getCurrentLocationAndOpenMap();
             }
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocationAndOpenMap();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void getCurrentLocationAndOpenMap() {
+        // Đoạn mã để lấy vị trí hiện tại và vị trí của trọ (giống như bạn đã viết)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                double userLatitude = location.getLatitude();
+                double userLongitude = location.getLongitude();
+
+                String addressText = address.getText().toString();
+                Geocoder geocoder = new Geocoder(DetailBlog.this);
+                try {
+                    List<Address> addressList = geocoder.getFromLocationName(addressText, 1);
+                    if (addressList != null && !addressList.isEmpty()) {
+                        Address trọAddress = addressList.get(0);
+                        double trọLatitude = trọAddress.getLatitude();
+                        double trọLongitude = trọAddress.getLongitude();
+
+                        Intent mapIntent = new Intent(DetailBlog.this, TestMap.class);
+                        mapIntent.putExtra("userLatitude", userLatitude);
+                        mapIntent.putExtra("userLongitude", userLongitude);
+                        mapIntent.putExtra("houseLatitude", trọLatitude);
+                        mapIntent.putExtra("houseLongitude", trọLongitude);
+                        startActivity(mapIntent);
+                    } else {
+                        Toast.makeText(DetailBlog.this, "Không tìm thấy vị trí của trọ từ địa chỉ", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(DetailBlog.this, "Lỗi khi chuyển đổi địa chỉ thành vị trí", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(DetailBlog.this, "Không thể lấy vị trí hiện tại, vui lòng bật GPS", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
