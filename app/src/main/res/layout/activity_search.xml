@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="0dp"
+        android:layout_marginStart="20dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="5dp"
+            app:tint="@color/pimary" />
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:text="Tìm kiếm nhà cho thuê "
+            android:textColor="@color/pimary"/>
+    </LinearLayout>
+    <!-- Search Form Container -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:background="@color/grey"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Spinner for House Type -->
+            <Spinner
+                android:id="@+id/houseTypeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Chọn loại nhà" />
+
+            <!-- EditText for Address -->
+            <EditText
+                android:id="@+id/addressEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Địa chỉ"
+                android:inputType="text"
+                android:layout_marginTop="8dp"/>
+
+            <!-- EditText for Max Price -->
+            <EditText
+                android:id="@+id/priceMaxEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Giá tối đa"
+                android:inputType="number"
+                android:layout_marginTop="8dp" />
+
+            <!-- EditText for Min Area -->
+            <EditText
+                android:id="@+id/areaMinEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Diện tích tối thiểu"
+                android:inputType="number"
+                android:layout_marginTop="8dp" />
+
+            <!-- EditText for Min Rooms -->
+            <EditText
+                android:id="@+id/roomMinEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Số phòng tối thiểu"
+                android:inputType="number"
+                android:layout_marginTop="8dp" />
+
+            <!-- Search Button -->
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tìm kiếm"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/pimary"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- RecyclerView for Search Results -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResultsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:background="#FFFFFF"
+        android:clipToPadding="false"/>
+</LinearLayout>

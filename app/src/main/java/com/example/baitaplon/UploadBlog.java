@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,7 +32,8 @@ public class UploadBlog extends AppCompatActivity {
     private ActivityBlogBinding binding;
     private EditText titleEditText, descriptionEditText, priceEditText, areaEditText, numberOfRoomEditText, phoneNumberEditText, imageUrlEditText, addressEditText;
     private Spinner houseTypeSpinner;
-    private Button postBlogButton,btnBack;
+    private Button postBlogButton;
+    private ImageView btnBack;
     private FirebaseDatabase database;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference, houseTypeReference;

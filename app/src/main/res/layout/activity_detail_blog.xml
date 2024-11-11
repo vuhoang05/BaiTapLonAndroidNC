@@ -48,6 +48,7 @@
                 android:text="Chi tiết thông tin "
                 android:textColor="@color/pimary"/>
         </LinearLayout>
+
             <ImageView
                 android:id="@+id/detail_image"
                 android:layout_width="match_parent"
