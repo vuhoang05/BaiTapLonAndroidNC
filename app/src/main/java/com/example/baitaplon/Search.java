@@ -51,11 +51,32 @@ public class Search extends AppCompatActivity {
         houseTypeReference = FirebaseDatabase.getInstance().getReference("houseType");
 
         setupHouseTypeSpinner();
+        loadAllBlogs();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performSearch();
+            }
+        });
+    }
+    private void loadAllBlogs() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                searchResultsList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Blog blog = dataSnapshot.getValue(Blog.class);
+                    if (blog != null) {
+                        searchResultsList.add(blog);  // Add all blogs to the list
+                    }
+                }
+                searchResultsAdapter.notifyDataSetChanged();  // Update the RecyclerView
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(Search.this, "Lỗi khi tải dữ liệu từ Firebase", Toast.LENGTH_SHORT).show();
             }
         });
     }
