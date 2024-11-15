@@ -19,8 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.baitaplon.Apdapter.BlogAdapter;
 import com.example.baitaplon.Domain.Blog;
 import com.example.baitaplon.databinding.ActivityDetailBlogBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,11 +35,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailBlog extends AppCompatActivity {
     ActivityDetailBlogBinding binding;
-
+    FirebaseDatabase database;
     private TextView title, description, address, price, area, numberOfRooms, houseType, contact;
     private ImageView image,btnBack;
     private Button buttonCall, buttonText, btnLocation;
@@ -49,6 +53,7 @@ public class DetailBlog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDetailBlogBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        database = FirebaseDatabase.getInstance();
 
         // Ánh xạ các view
         image = findViewById(R.id.detail_image);
@@ -66,7 +71,7 @@ public class DetailBlog extends AppCompatActivity {
         btnLocation = findViewById(R.id.btnlocaiton);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        initBlogs();
         // Lấy ID bài đăng từ Intent
         String blogId = getIntent().getStringExtra("BLOG_ID");
         if (blogId != null) {
@@ -80,7 +85,7 @@ public class DetailBlog extends AppCompatActivity {
                         title.setText(blog.getTitle());
                         description.setText(blog.getDescription());
                         address.setText("Địa chỉ: " + blog.getAddress());
-                        price.setText("Giá: " + blog.getPrice() + " VND");
+                        price.setText("Giá: " + blog.getPrice() + " đ/Tháng");
                         area.setText("Diện tích: " + blog.getArea());
                         numberOfRooms.setText("Số phòng: " + blog.getNumberOfRooms());
                         houseType.setText("Loại nhà: " + blog.getHouseType());
@@ -134,7 +139,37 @@ public class DetailBlog extends AppCompatActivity {
             }
         });
     }
+    private void initBlogs(){
+        DatabaseReference myRef = database.getReference("Blogs");
 
+        ArrayList<Blog> list = new ArrayList<>();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    list.clear();
+                    for (DataSnapshot issue : snapshot.getChildren()) {
+                        Blog blog = issue.getValue(Blog.class);
+                        if (blog != null) {
+                            blog.setPostID(issue.getKey()); // Set ID cho blog
+                            list.add(blog);
+                        }
+                    }
+                    if (!list.isEmpty()) {
+                        binding.recyclerBlogsRelate.setLayoutManager(new LinearLayoutManager(DetailBlog.this, LinearLayoutManager.HORIZONTAL, false));
+                        RecyclerView.Adapter adapter = new BlogAdapter(list);
+                        binding.recyclerBlogsRelate.setAdapter(adapter);
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

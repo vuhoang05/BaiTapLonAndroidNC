@@ -1,6 +1,7 @@
 package com.example.baitaplon.Apdapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.baitaplon.DetailBlog;
 import com.example.baitaplon.Domain.Blog;
 
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import com.example.baitaplon.Domain.houseTypes;
 import com.example.baitaplon.R;
+import com.example.baitaplon.houseTypeDisplayList;
 
 public class HouseTypesAdapter extends RecyclerView.Adapter<HouseTypesAdapter.ViewHolder>{
     ArrayList<houseTypes> houseTypes;
@@ -43,7 +46,15 @@ public class HouseTypesAdapter extends RecyclerView.Adapter<HouseTypesAdapter.Vi
                 .load(houseTypes.get(position).getImageUrl())
                 .transform(new CenterCrop(), new RoundedCorners(20))
                 .into(holder.imgHouseTypes);
+        View.OnClickListener detailClickListener = v -> {
+            Intent intent = new Intent(context, houseTypeDisplayList.class);
+            intent.putExtra("HouseType", houseTypes.get(position).getHouseTypeName()); // Truyền ID của blog sang DetailActivity
+            context.startActivity(intent);
+        };
+        holder.imgHouseTypes.setOnClickListener(detailClickListener);
+        holder.titleHouseTypes.setOnClickListener(detailClickListener);
     }
+
 
     @Override
     public int getItemCount() {

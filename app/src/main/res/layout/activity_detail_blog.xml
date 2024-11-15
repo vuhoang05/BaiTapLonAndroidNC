@@ -7,13 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".DetailBlog">
-    >
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,22 +30,30 @@
 
             <ImageView
                 android:id="@+id/btnBack"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="0dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/baseline_arrow_back_24"
                 android:layout_marginEnd="4dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 app:tint="@color/pimary" />
             <TextView
 
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"
                 android:text="Chi tiết thông tin "
                 android:textColor="@color/pimary"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/wishlist"
+                android:layout_marginStart="130dp"
+                android:layout_marginRight="30dp"
+                />
         </LinearLayout>
 
             <ImageView
@@ -57,18 +64,44 @@
                 />
 
             <!-- Title -->
-
             <TextView
                 android:id="@+id/detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Title of the Post"
+                android:layout_marginTop="20dp"
+                android:text="TRONG NHIEU PHONG FULL DO TAI THANH XUAN"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="18sp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginStart="20dp"
+                android:textAllCaps="true"
                 android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical">
 
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="7dp"
+                    android:src="@drawable/dollar"
+                    android:layout_marginEnd="4dp"
+                    app:tint="@color/red" />
+                <TextView
+                    android:id="@+id/detail_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Price: 3,000,000 VND"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
             <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,52 +122,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Address: 123 Main Street"
-                android:textColor="@color/black"
+                android:text="Phố Định Công,Quận Thanh Xuân,Thanh phố Hà Nội"
+                android:textColor="#838383"
+                android:textStyle="bold"
                 android:textSize="16sp" />
         </LinearLayout>
-
-
 
             <!-- Price -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_vertical">
 
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginTop="7dp"
-                android:src="@drawable/dollar"
-                android:layout_marginEnd="4dp"
-                app:tint="@color/red" />
-            <TextView
-                android:id="@+id/detail_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Price: 3,000,000 VND"
-                android:textColor="@color/red"
-                android:textSize="16sp" />
-        </LinearLayout>
             <!-- Description -->
-            <TextView
-                android:padding="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:id="@+id/detail_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:height="100dp"
-                android:background="@drawable/rounded_background"
-                android:text="Description of the post"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+
             <!-- Area -->
         <LinearLayout
             android:layout_width="wrap_content"
@@ -157,7 +154,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Area: 25 m²"
-                android:textColor="@color/black"
+
+                android:textStyle="bold"
+                android:textColor="#838383"
                 android:textSize="16sp" />
         </LinearLayout>
             <!-- Number of Rooms -->
@@ -182,7 +181,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Number of Rooms: 1"
-                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textColor="#838383"
                 android:textSize="16sp" />
         </LinearLayout>
             <!-- House Type -->
@@ -207,7 +207,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="House Type: Nhà trọ"
-                android:textColor="@color/black"
+                android:textColor="#838383"
+                android:textStyle="bold"
                 android:textSize="16sp" />
         </LinearLayout>
             <!-- Contact Info -->
@@ -232,52 +233,110 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Contact: 0901234567"
-                android:textColor="@color/black"
+                android:textColor="#838383"
+                android:textStyle="bold"
                 android:textSize="16sp" />
+
         </LinearLayout>
-            <!-- Button to Call -->
-            <LinearLayout
+            <TextView
+                android:padding="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/grey"
+                android:background="@drawable/rounded_background"
+                android:text="Mô tả chi tiêt"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+            <TextView
+                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:id="@+id/detail_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <Button
-                    android:id="@+id/button_text"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/pimary"
-                    android:text="Nhắn tin"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/button_call"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/pimary"
-                    android:text="Gọi điện"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-                <Button
-                    android:id="@+id/btnlocaiton"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/pimary"
-                    android:text="Xem vị trí"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_background"
+                android:text="Description of the post"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+            <TextView
+                android:padding="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Danh sách bài đăng liên quan"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerBlogsRelate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
         </LinearLayout>
+
+
     </ScrollView>
+    <!-- Button to Call -->
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/button_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#D7D7D7"
+            android:text="Chat"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_call"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#D7D7D7"
+            android:text="Call"
+            android:textColor="@color/grey2"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnlocaiton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/pimary"
+            android:text="Xem vị trí"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
