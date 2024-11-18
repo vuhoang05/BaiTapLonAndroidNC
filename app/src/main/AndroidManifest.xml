@@ -17,6 +17,28 @@
         android:theme="@style/Theme.BaiTapLon"
         tools:targetApi="31">
         <activity
+            android:name=".EditBlog"
+            android:exported="false" />
+        <activity
+            android:name=".ManageBlogs_Admin"
+            android:exported="false" />
+        <activity
+            android:name=".BlogOfUserList"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileDetail"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaveBlogs"
+            android:exported="false"
+            android:theme="@style/Theme.BaiTapLon" />
+        <activity
             android:name=".houseTypeDisplayList"
             android:exported="false" />
         <activity

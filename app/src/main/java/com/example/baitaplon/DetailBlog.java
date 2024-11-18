@@ -42,7 +42,7 @@ public class DetailBlog extends AppCompatActivity {
     ActivityDetailBlogBinding binding;
     FirebaseDatabase database;
     private TextView title, description, address, price, area, numberOfRooms, houseType, contact;
-    private ImageView image,btnBack;
+    private ImageView image,btnBack,btnSaveBlogg;
     private Button buttonCall, buttonText, btnLocation;
     private String contactNumber;
     private FusedLocationProviderClient fusedLocationClient;
@@ -69,6 +69,7 @@ public class DetailBlog extends AppCompatActivity {
         buttonText = findViewById(R.id.button_text);
         btnBack = findViewById(R.id.btnBack);
         btnLocation = findViewById(R.id.btnlocaiton);
+        btnSaveBlogg = findViewById(R.id.btnSaveBlog);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         initBlogs();
@@ -123,7 +124,6 @@ public class DetailBlog extends AppCompatActivity {
                 startActivity(callIntent);
             }
         });
-
         // Nút quay lại
         btnBack.setOnClickListener(view -> {
             Intent intent = new Intent(DetailBlog.this, MainActivity.class);
@@ -198,15 +198,15 @@ public class DetailBlog extends AppCompatActivity {
                 try {
                     List<Address> addressList = geocoder.getFromLocationName(addressText, 1);
                     if (addressList != null && !addressList.isEmpty()) {
-                        Address trọAddress = addressList.get(0);
-                        double trọLatitude = trọAddress.getLatitude();
-                        double trọLongitude = trọAddress.getLongitude();
+                        Address troAddress = addressList.get(0);
+                        double troLatitude = troAddress.getLatitude();
+                        double troLongitude = troAddress.getLongitude();
 
                         Intent mapIntent = new Intent(DetailBlog.this, TestMap.class);
                         mapIntent.putExtra("userLatitude", userLatitude);
                         mapIntent.putExtra("userLongitude", userLongitude);
-                        mapIntent.putExtra("houseLatitude", trọLatitude);
-                        mapIntent.putExtra("houseLongitude", trọLongitude);
+                        mapIntent.putExtra("houseLatitude", troLatitude);
+                        mapIntent.putExtra("houseLongitude", troLongitude);
                         startActivity(mapIntent);
                     } else {
                         Toast.makeText(DetailBlog.this, "Không tìm thấy vị trí của trọ từ địa chỉ", Toast.LENGTH_SHORT).show();
