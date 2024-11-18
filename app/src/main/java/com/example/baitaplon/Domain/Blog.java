@@ -2,7 +2,6 @@ package com.example.baitaplon.Domain;
 
 public class Blog {
     private String postID;
-
     private String title;
     private String description;
     private String imageUrl;

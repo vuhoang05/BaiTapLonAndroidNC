@@ -81,6 +81,13 @@ private ActivityMainBinding binding;
                 startActivity(intent);
             }
         });
+        binding.btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
       /*  binding.iconTrangchu.setOnClickListener(new View.OnClickListener() {
             @Override
