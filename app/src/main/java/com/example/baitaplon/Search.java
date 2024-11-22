@@ -50,8 +50,15 @@ public class Search extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Blogs");
         houseTypeReference = FirebaseDatabase.getInstance().getReference("houseType");
 
-        setupHouseTypeSpinner();
-        loadAllBlogs();
+        String keyword = getIntent().getStringExtra("searchText");
+
+        if (keyword != null && !keyword.isEmpty()) {
+            performSearch(keyword); // Gọi tìm kiếm với từ khóa
+            setupHouseTypeSpinner();
+        }else{
+            setupHouseTypeSpinner();
+            loadAllBlogs();
+        }
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +67,32 @@ public class Search extends AppCompatActivity {
             }
         });
     }
+    private void performSearch(String keyword) {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                searchResultsList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Blog blog = dataSnapshot.getValue(Blog.class);
+                    if (blog != null && blog.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                        searchResultsList.add(blog);
+                    }
+                }
+
+                // Kiểm tra kết quả
+                if (searchResultsList.isEmpty()) {
+                    Toast.makeText(Search.this, "Không tìm thấy kết quả phù hợp", Toast.LENGTH_SHORT).show();
+                }
+                searchResultsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(Search.this, "Lỗi khi tải dữ liệu từ Firebase", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void loadAllBlogs() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -101,7 +134,6 @@ public class Search extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 Toast.makeText(Search.this, "Lỗi khi tải loại nhà từ Firebase", Toast.LENGTH_SHORT).show();
