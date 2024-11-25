@@ -28,7 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class UploadBlog extends AppCompatActivity {
+public class
+UploadBlog extends AppCompatActivity {
     private ActivityBlogBinding binding;
     private EditText titleEditText, descriptionEditText, priceEditText, areaEditText, numberOfRoomEditText, phoneNumberEditText, imageUrlEditText, addressEditText;
     private Spinner houseTypeSpinner;

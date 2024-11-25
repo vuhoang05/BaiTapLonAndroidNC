@@ -74,6 +74,14 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(ProfileActivity.this, BlogOfUserList.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.btnBookViewingRoom).setOnClickListener(view -> {
+            Intent intent = new Intent(ProfileActivity.this, BookingListActivity.class);
+            startActivity(intent);
+        });
+
+
+
     }
 
     private void checkUserProfile() {
