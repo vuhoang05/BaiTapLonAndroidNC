@@ -46,22 +46,15 @@
                 android:layout_marginTop="15dp"
                 android:text="Chi tiết thông tin "
                 android:textColor="@color/pimary"/>
+
             <ImageView
-                android:id="@+id/btnWishlist"
+                android:id="@+id/btnSaveBlog"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/wishlist"
                 android:layout_marginStart="130dp"
-                android:layout_marginRight="30dp" />
-
-            <ImageView
-                android:id="@+id/btnListLoved"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/listloved"
-                android:visibility="gone"
-                android:layout_marginStart="130dp"
-                android:layout_marginRight="30dp" />
+                android:layout_marginRight="30dp"
+                />
         </LinearLayout>
 
             <ImageView
