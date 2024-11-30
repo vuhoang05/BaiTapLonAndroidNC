@@ -44,9 +44,15 @@ public class DetailBlog extends AppCompatActivity {
     FirebaseDatabase database;
     private DatabaseReference databaseFavorite;
     private TextView title, description, address, price, area, numberOfRooms, houseType, contact;
+
+    private ImageView image,btnBack,btnSaveBlogg;
+    private Button buttonCall, buttonText, btnLocation, btnBooking;
+    private String contactNumber;
+
     private ImageView image,btnBack,btnWishlist,btnListLoved;
     private Button buttonCall, buttonText, btnLocation;
     private String contactNumber,imageUrl;
+
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -69,6 +75,7 @@ public class DetailBlog extends AppCompatActivity {
         houseType = findViewById(R.id.detail_house_type);
         contact = findViewById(R.id.detail_contact);
         buttonCall = findViewById(R.id.button_call);
+        btnBooking = findViewById(R.id.btnBooking);
         buttonText = findViewById(R.id.button_text);
         btnBack = findViewById(R.id.btnBack);
         btnLocation = findViewById(R.id.btnlocaiton);
@@ -162,6 +169,10 @@ public class DetailBlog extends AppCompatActivity {
         // Nút quay lại
         btnBack.setOnClickListener(view -> {
             Intent intent = new Intent(DetailBlog.this, MainActivity.class);
+            startActivity(intent);
+        });
+        btnBooking.setOnClickListener(view -> {
+            Intent intent = new Intent(DetailBlog.this, BookViewingRoom.class);
             startActivity(intent);
         });
 
