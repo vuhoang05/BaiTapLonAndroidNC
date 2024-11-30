@@ -22,9 +22,6 @@
             android:exported="false" />
         <activity
             android:name=".BookViewingRoom"
-
-            android:name=".FavoriteList"
-
             android:exported="false" />
         <activity
             android:name=".EditBlog"
@@ -39,15 +36,10 @@
             android:name=".ProfileDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileDetail"
-            android:exported="false" />
-        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".SaveBlogs"
-            android:exported="false"
-            android:theme="@style/Theme.BaiTapLon" />
+
+
         <activity
             android:name=".houseTypeDisplayList"
             android:exported="false" />
