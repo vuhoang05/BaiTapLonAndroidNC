@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/grey">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đặt lịch xem phòng"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Thông tin người thuê và chủ nhà -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_user"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/tvTenantInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Khách thuê: Nguyễn Văn Hào"
+            android:layout_weight="1"
+            android:textColor="@android:color/black" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_user"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/tvOwnerInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Chủ nhà: Chưa biết tên"
+            android:layout_weight="1"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <!-- Chọn thời gian xem phòng -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thời gian xem phòng *"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/edtSelectTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Chọn thời gian xem phòng"
+        android:inputType="none"
+        android:focusable="false"
+        android:drawableEnd="@drawable/ic_calendar"
+        android:background="@drawable/rounded_background"
+        android:padding="12dp" />
+
+    <!-- Nút Đặt lịch -->
+    <Button
+        android:id="@+id/btnConfirmBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đặt lịch xem phòng"
+        android:backgroundTint="@color/black"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp" />
+
+</LinearLayout>

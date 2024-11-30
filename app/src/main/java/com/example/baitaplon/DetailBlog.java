@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -25,10 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.baitaplon.Apdapter.BlogAdapter;
 import com.example.baitaplon.Domain.Blog;
+import com.example.baitaplon.Domain.Favorite;
 import com.example.baitaplon.databinding.ActivityDetailBlogBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,14 +37,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DetailBlog extends AppCompatActivity {
     ActivityDetailBlogBinding binding;
     FirebaseDatabase database;
+    private DatabaseReference databaseFavorite;
     private TextView title, description, address, price, area, numberOfRooms, houseType, contact;
+
     private ImageView image,btnBack,btnSaveBlogg;
     private Button buttonCall, buttonText, btnLocation, btnBooking;
     private String contactNumber;
+
+    private ImageView image,btnBack,btnWishlist,btnListLoved;
+    private Button buttonCall, buttonText, btnLocation;
+    private String contactNumber,imageUrl;
+
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -54,6 +62,7 @@ public class DetailBlog extends AppCompatActivity {
         binding = ActivityDetailBlogBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         database = FirebaseDatabase.getInstance();
+        databaseFavorite = FirebaseDatabase.getInstance().getReference("Favorite");
 
         // Ánh xạ các view
         image = findViewById(R.id.detail_image);
@@ -70,7 +79,8 @@ public class DetailBlog extends AppCompatActivity {
         buttonText = findViewById(R.id.button_text);
         btnBack = findViewById(R.id.btnBack);
         btnLocation = findViewById(R.id.btnlocaiton);
-        btnSaveBlogg = findViewById(R.id.btnSaveBlog);
+        btnWishlist=findViewById(R.id.btnWishlist);
+        btnListLoved=findViewById(R.id.btnListLoved);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         initBlogs();
@@ -93,7 +103,7 @@ public class DetailBlog extends AppCompatActivity {
                         houseType.setText("Loại nhà: " + blog.getHouseType());
                         contact.setText("Liên hệ: " + blog.getSdt());
                         contactNumber = blog.getSdt(); // Lưu số điện thoại để sử dụng cho các nút liên hệ
-
+                        imageUrl = blog.getImageUrl();
                         // Hiển thị hình ảnh bằng Glide
                         Glide.with(DetailBlog.this)
                                 .load(blog.getImageUrl())
@@ -104,6 +114,37 @@ public class DetailBlog extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     // Xử lý lỗi nếu cần
+                }
+            });
+
+        }
+        if (blogId != null) {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            databaseFavorite.orderByChild("userID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    boolean isLoved = false;
+                    for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
+                        Favorite favorite = favoriteSnapshot.getValue(Favorite.class);
+                        if (favorite != null && favorite.getTitle().equals(title.getText().toString())) {
+                            isLoved = true;
+                            break;
+                        }
+                    }
+
+                    // Cập nhật trạng thái nút
+                    if (isLoved) {
+                        btnWishlist.setVisibility(View.GONE);
+                        btnListLoved.setVisibility(View.VISIBLE);
+                    } else {
+                        btnWishlist.setVisibility(View.VISIBLE);
+                        btnListLoved.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(DetailBlog.this, "Lỗi tải trạng thái yêu thích: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -143,6 +184,89 @@ public class DetailBlog extends AppCompatActivity {
                 getCurrentLocationAndOpenMap();
             }
         });
+        btnWishlist.setOnClickListener(view -> {
+            // Ẩn nút Wishlist và hiển thị nút Loved
+            btnWishlist.setVisibility(View.GONE);
+            btnListLoved.setVisibility(View.VISIBLE);
+
+
+            // Lấy ID người dùng từ Firebase
+            String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+            // Tạo ID duy nhất cho favorite
+            String favoriteID = databaseFavorite.push().getKey();
+            String postID = getIntent().getStringExtra("BLOG_ID");
+            if (favoriteID != null) {
+                // Tạo đối tượng Favorite
+                Favorite favorite = new Favorite(
+                        favoriteID,title.getText().toString(), // Tiêu đề bài viết
+                        description.getText().toString(), // Mô tả
+                        imageUrl,// Hình ảnh (lấy từ thẻ Tag của ImageView)
+                        area.getText().toString(), // Diện tích
+                        price.getText().toString(), // Giá
+                        numberOfRooms.getText().toString(), // Số phòng
+                        postID,
+                        address.getText().toString(), // Địa chỉ
+                        userID, // ID người dùng
+                        contact.getText().toString(), // Số điện thoại liên hệ
+                        houseType.getText().toString(), // Loại nhà
+                        true, // Trạng thái yêu thích (true khi thêm vào yêu thích)
+                        false // Trạng thái Loved (false khi chưa yêu thích)
+
+
+                );
+
+                // Cập nhật vào Firebase Database
+                databaseFavorite.child(favoriteID).setValue(favorite)
+                        .addOnSuccessListener(aVoid -> {
+                            // Hiển thị thông báo khi thêm thành công
+                            Toast.makeText(DetailBlog.this, "Đã thêm vào danh sách yêu thích!", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            // Hiển thị thông báo lỗi khi thêm thất bại
+                            Toast.makeText(DetailBlog.this, "Lỗi khi thêm vào yêu thích: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+
+
+            }
+        });
+
+        btnListLoved.setOnClickListener(view -> {
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            databaseFavorite.orderByChild("userID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
+                        Favorite favorite = favoriteSnapshot.getValue(Favorite.class);
+                        if (favorite != null && favorite.getTitle().equals(title.getText().toString())) {
+                            favoriteSnapshot.getRef().removeValue()
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(DetailBlog.this, "Đã xóa khỏi danh sách yêu thích!", Toast.LENGTH_SHORT).show();
+                                        btnWishlist.setVisibility(View.VISIBLE);
+                                        btnListLoved.setVisibility(View.GONE);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(DetailBlog.this, "Xóa thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                            return;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(DetailBlog.this, "Lỗi truy vấn dữ liệu yêu thích: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+
+
+
+
+
+
     }
     private void initBlogs(){
         DatabaseReference myRef = database.getReference("Blogs");
