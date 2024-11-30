@@ -1,0 +1,1106 @@
+From a2f4db3acee742be558a6f473d31d23d726bd92c Mon Sep 17 00:00:00 2001
+From: Libranne <hieuks750@gmail.com>
+Date: Fri, 22 Nov 2024 19:55:05 +0700
+Subject: [PATCH] FavoriteList
+
+---
+ .idea/compiler.xml                            |   2 +-
+ .idea/deploymentTargetSelector.xml            |   3 +
+ .idea/gradle.xml                              |   1 +
+ .idea/misc.xml                                |   3 +-
+ .idea/runConfigurations.xml                   |  17 ++
+ .idea/vcs.xml                                 |   6 +
+ app/src/main/AndroidManifest.xml              |   3 +
+ .../baitaplon/Apdapter/FavoriteAdapter.java   | 113 +++++++++++++
+ .../com/example/baitaplon/DetailBlog.java     | 130 ++++++++++++++-
+ .../example/baitaplon/Domain/Favorite.java    | 152 ++++++++++++++++++
+ .../com/example/baitaplon/FavoriteList.java   |  69 ++++++++
+ .../com/example/baitaplon/MainActivity.java   |  19 ++-
+ .../java/com/example/baitaplon/Search.java    |  38 ++++-
+ app/src/main/res/drawable/bell.png            | Bin 0 -> 276 bytes
+ app/src/main/res/drawable/listloved.png       | Bin 0 -> 376 bytes
+ .../main/res/layout/activity_detail_blog.xml  |  15 +-
+ .../res/layout/activity_favorite_list.xml     |  75 +++++++++
+ app/src/main/res/layout/activity_main.xml     |  11 +-
+ .../main/res/layout/viewholder_favorite.xml   | 138 ++++++++++++++++
+ 19 files changed, 776 insertions(+), 19 deletions(-)
+ create mode 100644 .idea/runConfigurations.xml
+ create mode 100644 .idea/vcs.xml
+ create mode 100644 app/src/main/java/com/example/baitaplon/Apdapter/FavoriteAdapter.java
+ create mode 100644 app/src/main/java/com/example/baitaplon/Domain/Favorite.java
+ create mode 100644 app/src/main/java/com/example/baitaplon/FavoriteList.java
+ create mode 100644 app/src/main/res/drawable/bell.png
+ create mode 100644 app/src/main/res/drawable/listloved.png
+ create mode 100644 app/src/main/res/layout/activity_favorite_list.xml
+ create mode 100644 app/src/main/res/layout/viewholder_favorite.xml
+
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+index b589d56..b86273d 100644
+--- a/.idea/compiler.xml
++++ b/.idea/compiler.xml
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="17" />
++    <bytecodeTargetLevel target="21" />
+   </component>
+ </project>
+\ No newline at end of file
+diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+index a0b204d..11b97b1 100644
+--- a/.idea/deploymentTargetSelector.xml
++++ b/.idea/deploymentTargetSelector.xml
+@@ -13,6 +13,9 @@
+         </DropdownSelection>
+         <DialogSelection />
+       </SelectionState>
++      <SelectionState runConfigName="FavoriteList">
++        <option name="selectionMode" value="DROPDOWN" />
++      </SelectionState>
+     </selectionStates>
+   </component>
+ </project>
+\ No newline at end of file
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+index 0897082..7b3006b 100644
+--- a/.idea/gradle.xml
++++ b/.idea/gradle.xml
+@@ -4,6 +4,7 @@
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
++        <option name="testRunner" value="CHOOSE_PER_TEST" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+         <option name="modules">
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+index 8978d23..74dd639 100644
+--- a/.idea/misc.xml
++++ b/.idea/misc.xml
+@@ -1,6 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ExternalStorageConfigurationManager" enabled="true" />
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+diff --git a/.idea/runConfigurations.xml b/.idea/runConfigurations.xml
+new file mode 100644
+index 0000000..16660f1
+--- /dev/null
++++ b/.idea/runConfigurations.xml
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RunConfigurationProducerService">
++    <option name="ignoredProducers">
++      <set>
++        <option value="com.intellij.execution.junit.AbstractAllInDirectoryConfigurationProducer" />
++        <option value="com.intellij.execution.junit.AllInPackageConfigurationProducer" />
++        <option value="com.intellij.execution.junit.PatternConfigurationProducer" />
++        <option value="com.intellij.execution.junit.TestInClassConfigurationProducer" />
++        <option value="com.intellij.execution.junit.UniqueIdConfigurationProducer" />
++        <option value="com.intellij.execution.junit.testDiscovery.JUnitTestDiscoveryConfigurationProducer" />
++        <option value="org.jetbrains.kotlin.idea.junit.KotlinJUnitRunConfigurationProducer" />
++        <option value="org.jetbrains.kotlin.idea.junit.KotlinPatternConfigurationProducer" />
++      </set>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+index 0000000..35eb1dd
+--- /dev/null
++++ b/.idea/vcs.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index ed02513..7de448f 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -16,6 +16,9 @@
+         android:supportsRtl="true"
+         android:theme="@style/Theme.BaiTapLon"
+         tools:targetApi="31">
++        <activity
++            android:name=".FavoriteList"
++            android:exported="false" />
+         <activity
+             android:name=".EditBlog"
+             android:exported="false" />
+diff --git a/app/src/main/java/com/example/baitaplon/Apdapter/FavoriteAdapter.java b/app/src/main/java/com/example/baitaplon/Apdapter/FavoriteAdapter.java
+new file mode 100644
+index 0000000..4ab30c8
+--- /dev/null
++++ b/app/src/main/java/com/example/baitaplon/Apdapter/FavoriteAdapter.java
+@@ -0,0 +1,113 @@
++package com.example.baitaplon.Apdapter;
++
++import android.content.Context;
++import android.content.Intent;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ImageView;
++import android.widget.TextView;
++import android.widget.Toast;
++
++import androidx.annotation.NonNull;
++import androidx.recyclerview.widget.RecyclerView;
++
++import com.bumptech.glide.Glide;
++import com.bumptech.glide.load.resource.bitmap.CenterCrop;
++import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
++import com.example.baitaplon.DetailBlog;
++import com.example.baitaplon.Domain.Favorite;
++import com.example.baitaplon.R;
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++
++import java.util.ArrayList;
++
++public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
++    ArrayList<Favorite> favoriteList;
++    Context context;
++    DatabaseReference databaseFavorite;
++
++    public FavoriteAdapter(ArrayList<Favorite> favoriteList) {
++        this.favoriteList = favoriteList;
++        this.databaseFavorite = FirebaseDatabase.getInstance().getReference("Favorite");
++    }
++
++    @NonNull
++    @Override
++    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
++        context = parent.getContext();
++        View view = LayoutInflater.from(context).inflate(R.layout.viewholder_favorite, parent, false);
++        return new FavoriteViewHolder(view);
++    }
++
++    @Override
++    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
++        Favorite favorite = favoriteList.get(position);
++
++        // Gắn dữ liệu lên ViewHolder
++        holder.titleBlog.setText(favorite.getTitle());
++        holder.area.setText(favorite.getArea() + " m²");
++        holder.price_txt.setText(favorite.getPrice());
++        holder.address.setText("Địa chỉ: " + favorite.getAddress());
++
++        // Tải ảnh bằng Glide
++        Glide.with(context)
++                .load(favorite.getImageUrl())
++                .transform(new CenterCrop(), new RoundedCorners(20))
++                .into(holder.img);
++
++        // Mở chi tiết khi nhấn vào ảnh hoặc tiêu đề
++        View.OnClickListener detailClickListener = v -> {
++            Intent intent = new Intent(context, DetailBlog.class);
++            intent.putExtra("BLOG_ID", favorite.getPostID());
++            context.startActivity(intent);
++        };
++        holder.img.setOnClickListener(detailClickListener);
++        holder.titleBlog.setOnClickListener(detailClickListener);
++
++        // Xóa bài yêu thích khỏi Firebase và danh sách
++        holder.btnListLoved.setOnClickListener(v -> {
++            String favoriteID = favorite.getFavoriteID();
++            holder.btnListLoved.setVisibility(View.GONE);
++            holder.btnWishlist.setVisibility(View.VISIBLE);
++
++            // Xóa trong Firebase
++            databaseFavorite.child(favoriteID).removeValue()
++                    .addOnSuccessListener(unused -> {
++                        // Cập nhật lại danh sách
++                        favoriteList.remove(position);
++                        notifyItemRemoved(position);
++                        notifyItemRangeChanged(position, favoriteList.size());
++
++                        Toast.makeText(context, "Đã xóa khỏi danh sách yêu thích!", Toast.LENGTH_SHORT).show();
++
++                    })
++                    .addOnFailureListener(e -> {
++                        Toast.makeText(context, "Xóa thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
++                    });
++        });
++    }
++
++    @Override
++    public int getItemCount() {
++        return favoriteList.size();
++    }
++
++    public static class FavoriteViewHolder extends RecyclerView.ViewHolder {
++        TextView titleBlog, price_txt, address, area;
++        ImageView img, btnListLoved, btnWishlist;
++
++        public FavoriteViewHolder(View itemView) {
++            super(itemView);
++            titleBlog = itemView.findViewById(R.id.titleBlog);
++            price_txt = itemView.findViewById(R.id.price_txt);
++            address = itemView.findViewById(R.id.address);
++            img = itemView.findViewById(R.id.img);
++            area = itemView.findViewById(R.id.areaText);
++            btnListLoved = itemView.findViewById(R.id.btnListLoved);
++            btnWishlist = itemView.findViewById(R.id.btnWishlist);
++        }
++    }
++}
+diff --git a/app/src/main/java/com/example/baitaplon/DetailBlog.java b/app/src/main/java/com/example/baitaplon/DetailBlog.java
+index c8c3afa..9a833ee 100644
+--- a/app/src/main/java/com/example/baitaplon/DetailBlog.java
++++ b/app/src/main/java/com/example/baitaplon/DetailBlog.java
+@@ -5,7 +5,6 @@ import android.content.Intent;
+ import android.content.pm.PackageManager;
+ import android.location.Address;
+ import android.location.Geocoder;
+-import android.location.Location;
+ import android.net.Uri;
+ import android.os.Bundle;
+ import android.view.View;
+@@ -25,10 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
+ import com.bumptech.glide.Glide;
+ import com.example.baitaplon.Apdapter.BlogAdapter;
+ import com.example.baitaplon.Domain.Blog;
++import com.example.baitaplon.Domain.Favorite;
+ import com.example.baitaplon.databinding.ActivityDetailBlogBinding;
+ import com.google.android.gms.location.FusedLocationProviderClient;
+ import com.google.android.gms.location.LocationServices;
+-import com.google.android.gms.tasks.OnSuccessListener;
++import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.database.DataSnapshot;
+ import com.google.firebase.database.DatabaseError;
+ import com.google.firebase.database.DatabaseReference;
+@@ -37,14 +37,16 @@ import com.google.firebase.database.ValueEventListener;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
++import java.util.Objects;
+ 
+ public class DetailBlog extends AppCompatActivity {
+     ActivityDetailBlogBinding binding;
+     FirebaseDatabase database;
++    private DatabaseReference databaseFavorite;
+     private TextView title, description, address, price, area, numberOfRooms, houseType, contact;
+-    private ImageView image,btnBack,btnSaveBlogg;
++    private ImageView image,btnBack,btnWishlist,btnListLoved;
+     private Button buttonCall, buttonText, btnLocation;
+-    private String contactNumber;
++    private String contactNumber,imageUrl;
+     private FusedLocationProviderClient fusedLocationClient;
+     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+ 
+@@ -54,6 +56,7 @@ public class DetailBlog extends AppCompatActivity {
+         binding = ActivityDetailBlogBinding.inflate(getLayoutInflater());
+         setContentView(binding.getRoot());
+         database = FirebaseDatabase.getInstance();
++        databaseFavorite = FirebaseDatabase.getInstance().getReference("Favorite");
+ 
+         // Ánh xạ các view
+         image = findViewById(R.id.detail_image);
+@@ -69,7 +72,8 @@ public class DetailBlog extends AppCompatActivity {
+         buttonText = findViewById(R.id.button_text);
+         btnBack = findViewById(R.id.btnBack);
+         btnLocation = findViewById(R.id.btnlocaiton);
+-        btnSaveBlogg = findViewById(R.id.btnSaveBlog);
++        btnWishlist=findViewById(R.id.btnWishlist);
++        btnListLoved=findViewById(R.id.btnListLoved);
+ 
+         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+         initBlogs();
+@@ -92,7 +96,7 @@ public class DetailBlog extends AppCompatActivity {
+                         houseType.setText("Loại nhà: " + blog.getHouseType());
+                         contact.setText("Liên hệ: " + blog.getSdt());
+                         contactNumber = blog.getSdt(); // Lưu số điện thoại để sử dụng cho các nút liên hệ
+-
++                        imageUrl = blog.getImageUrl();
+                         // Hiển thị hình ảnh bằng Glide
+                         Glide.with(DetailBlog.this)
+                                 .load(blog.getImageUrl())
+@@ -105,6 +109,37 @@ public class DetailBlog extends AppCompatActivity {
+                     // Xử lý lỗi nếu cần
+                 }
+             });
++
++        }
++        if (blogId != null) {
++            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
++            databaseFavorite.orderByChild("userID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
++                @Override
++                public void onDataChange(@NonNull DataSnapshot snapshot) {
++                    boolean isLoved = false;
++                    for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
++                        Favorite favorite = favoriteSnapshot.getValue(Favorite.class);
++                        if (favorite != null && favorite.getTitle().equals(title.getText().toString())) {
++                            isLoved = true;
++                            break;
++                        }
++                    }
++
++                    // Cập nhật trạng thái nút
++                    if (isLoved) {
++                        btnWishlist.setVisibility(View.GONE);
++                        btnListLoved.setVisibility(View.VISIBLE);
++                    } else {
++                        btnWishlist.setVisibility(View.VISIBLE);
++                        btnListLoved.setVisibility(View.GONE);
++                    }
++                }
++
++                @Override
++                public void onCancelled(@NonNull DatabaseError error) {
++                    Toast.makeText(DetailBlog.this, "Lỗi tải trạng thái yêu thích: " + error.getMessage(), Toast.LENGTH_SHORT).show();
++                }
++            });
+         }
+ 
+         // Nút nhắn tin
+@@ -138,6 +173,89 @@ public class DetailBlog extends AppCompatActivity {
+                 getCurrentLocationAndOpenMap();
+             }
+         });
++        btnWishlist.setOnClickListener(view -> {
++            // Ẩn nút Wishlist và hiển thị nút Loved
++            btnWishlist.setVisibility(View.GONE);
++            btnListLoved.setVisibility(View.VISIBLE);
++
++
++            // Lấy ID người dùng từ Firebase
++            String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
++
++            // Tạo ID duy nhất cho favorite
++            String favoriteID = databaseFavorite.push().getKey();
++            String postID = getIntent().getStringExtra("BLOG_ID");
++            if (favoriteID != null) {
++                // Tạo đối tượng Favorite
++                Favorite favorite = new Favorite(
++                        favoriteID,title.getText().toString(), // Tiêu đề bài viết
++                        description.getText().toString(), // Mô tả
++                        imageUrl,// Hình ảnh (lấy từ thẻ Tag của ImageView)
++                        area.getText().toString(), // Diện tích
++                        price.getText().toString(), // Giá
++                        numberOfRooms.getText().toString(), // Số phòng
++                        postID,
++                        address.getText().toString(), // Địa chỉ
++                        userID, // ID người dùng
++                        contact.getText().toString(), // Số điện thoại liên hệ
++                        houseType.getText().toString(), // Loại nhà
++                        true, // Trạng thái yêu thích (true khi thêm vào yêu thích)
++                        false // Trạng thái Loved (false khi chưa yêu thích)
++
++
++                );
++
++                // Cập nhật vào Firebase Database
++                databaseFavorite.child(favoriteID).setValue(favorite)
++                        .addOnSuccessListener(aVoid -> {
++                            // Hiển thị thông báo khi thêm thành công
++                            Toast.makeText(DetailBlog.this, "Đã thêm vào danh sách yêu thích!", Toast.LENGTH_SHORT).show();
++                        })
++                        .addOnFailureListener(e -> {
++                            // Hiển thị thông báo lỗi khi thêm thất bại
++                            Toast.makeText(DetailBlog.this, "Lỗi khi thêm vào yêu thích: " + e.getMessage(), Toast.LENGTH_SHORT).show();
++                        });
++
++
++            }
++        });
++
++        btnListLoved.setOnClickListener(view -> {
++            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
++
++            databaseFavorite.orderByChild("userID").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
++                @Override
++                public void onDataChange(@NonNull DataSnapshot snapshot) {
++                    for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
++                        Favorite favorite = favoriteSnapshot.getValue(Favorite.class);
++                        if (favorite != null && favorite.getTitle().equals(title.getText().toString())) {
++                            favoriteSnapshot.getRef().removeValue()
++                                    .addOnSuccessListener(unused -> {
++                                        Toast.makeText(DetailBlog.this, "Đã xóa khỏi danh sách yêu thích!", Toast.LENGTH_SHORT).show();
++                                        btnWishlist.setVisibility(View.VISIBLE);
++                                        btnListLoved.setVisibility(View.GONE);
++                                    })
++                                    .addOnFailureListener(e -> {
++                                        Toast.makeText(DetailBlog.this, "Xóa thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
++                                    });
++                            return;
++                        }
++                    }
++                }
++
++                @Override
++                public void onCancelled(@NonNull DatabaseError error) {
++                    Toast.makeText(DetailBlog.this, "Lỗi truy vấn dữ liệu yêu thích: " + error.getMessage(), Toast.LENGTH_SHORT).show();
++                }
++            });
++        });
++
++
++
++
++
++
++
+     }
+     private void initBlogs(){
+         DatabaseReference myRef = database.getReference("Blogs");
+diff --git a/app/src/main/java/com/example/baitaplon/Domain/Favorite.java b/app/src/main/java/com/example/baitaplon/Domain/Favorite.java
+new file mode 100644
+index 0000000..0789897
+--- /dev/null
++++ b/app/src/main/java/com/example/baitaplon/Domain/Favorite.java
+@@ -0,0 +1,152 @@
++package com.example.baitaplon.Domain;
++
++public class Favorite {
++    private String favoriteID;
++
++    private String title;
++    private String description;
++    private String imageUrl;
++    private String area;
++    private String price;
++    private String numberOfRooms;
++    private String postID;
++    private String address;
++    private String userID;
++    private String sdt;
++    private String houseType;
++    private boolean inWishlist; // Thêm thuộc tính inWishlist
++    private boolean inListLoved; // Thêm thuộc tính inListLoved
++    public Favorite() {
++        // Constructor không tham số cần thiết cho Firebase
++    }
++    public Favorite(String favoriteID, String title, String description, String imageUrl, String area, String price, String numberOfRooms, String postID, String address, String userID, String sdt, String houseType, boolean inWishlist, boolean inListLoved) {
++        this.favoriteID = favoriteID;
++        this.title = title;
++        this.description = description;
++        this.imageUrl = imageUrl;
++        this.area = area;
++        this.price = price;
++        this.numberOfRooms = numberOfRooms;
++        this.postID = postID;
++        this.address = address;
++        this.userID = userID;
++        this.sdt = sdt;
++        this.houseType = houseType;
++        this.inWishlist = inWishlist;
++        this.inListLoved = inListLoved;
++    }
++
++    public String getFavoriteID() {
++        return favoriteID;
++    }
++
++    public void setFavoriteID(String favoriteID) {
++        this.favoriteID = favoriteID;
++    }
++
++    public String getPostID() {
++        return postID;
++    }
++
++    public void setPostID(String postID) {
++        this.postID = postID;
++    }
++
++    public String getTitle() {
++        return title;
++    }
++
++    public void setTitle(String title) {
++        this.title = title;
++    }
++
++    public String getDescription() {
++        return description;
++    }
++
++    public void setDescription(String description) {
++        this.description = description;
++    }
++
++    public String getImageUrl() {
++        return imageUrl;
++    }
++
++    public void setImageUrl(String imageUrl) {
++        this.imageUrl = imageUrl;
++    }
++
++    public String getArea() {
++        return area;
++    }
++
++    public void setArea(String area) {
++        this.area = area;
++    }
++
++    public String getPrice() {
++        return price;
++    }
++
++    public void setPrice(String price) {
++        this.price = price;
++    }
++
++    public String getNumberOfRooms() {
++        return numberOfRooms;
++    }
++
++    public void setNumberOfRooms(String numberOfRooms) {
++        this.numberOfRooms = numberOfRooms;
++    }
++
++    public String getAddress() {
++        return address;
++    }
++
++    public void setAddress(String address) {
++        this.address = address;
++    }
++
++    public String getUserID() {
++        return userID;
++    }
++
++    public void setUserID(String userID) {
++        this.userID = userID;
++    }
++
++    public String getSdt() {
++        return sdt;
++    }
++
++    public void setSdt(String sdt) {
++        this.sdt = sdt;
++    }
++
++    public String getHouseType() {
++        return houseType;
++    }
++
++    public void setHouseType(String houseType) {
++        this.houseType = houseType;
++    }
++
++    public boolean isInWishlist() {
++        return inWishlist;
++    }
++
++    public void setInWishlist(boolean inWishlist) {
++        this.inWishlist = inWishlist;
++    }
++
++    public boolean isInListLoved() {
++        return inListLoved;
++    }
++
++    public void setInListLoved(boolean inListLoved) {
++        this.inListLoved = inListLoved;
++    }
++
++
++}
+diff --git a/app/src/main/java/com/example/baitaplon/FavoriteList.java b/app/src/main/java/com/example/baitaplon/FavoriteList.java
+new file mode 100644
+index 0000000..515a608
+--- /dev/null
++++ b/app/src/main/java/com/example/baitaplon/FavoriteList.java
+@@ -0,0 +1,69 @@
++package com.example.baitaplon;
++
++import android.os.Bundle;
++
++import androidx.annotation.NonNull;
++import androidx.appcompat.app.AppCompatActivity;
++import androidx.recyclerview.widget.LinearLayoutManager;
++
++import com.example.baitaplon.Apdapter.FavoriteAdapter;
++import com.example.baitaplon.Domain.Favorite;
++import com.example.baitaplon.databinding.ActivityFavoriteListBinding;
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.database.DataSnapshot;
++import com.google.firebase.database.DatabaseError;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++import com.google.firebase.database.ValueEventListener;
++
++import java.util.ArrayList;
++
++public class FavoriteList extends AppCompatActivity {
++
++    private ActivityFavoriteListBinding binding;
++    private FirebaseDatabase database;
++    private String userId;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++
++        // Inflate layout
++        binding = ActivityFavoriteListBinding.inflate(getLayoutInflater());
++        setContentView(binding.getRoot());
++
++        // Initialize Firebase
++        database = FirebaseDatabase.getInstance();
++
++        // Get userId from Firebase Authentication
++        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
++
++        initFavorites();
++    }
++
++    private void initFavorites() {
++        DatabaseReference ref = database.getReference("Favorite");
++
++        ref.orderByChild("userID").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
++            @Override
++            public void onDataChange(@NonNull DataSnapshot snapshot) {
++                ArrayList<Favorite> favoriteList = new ArrayList<>();
++                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
++                    Favorite favorite = dataSnapshot.getValue(Favorite.class);
++                    if (favorite != null) {
++                        favoriteList.add(favorite);
++                    }
++                }
++                // Set up RecyclerView with Adapter
++                FavoriteAdapter adapter = new FavoriteAdapter(favoriteList);
++                binding.recyclerFavoriteList.setLayoutManager(new LinearLayoutManager(FavoriteList.this));
++                binding.recyclerFavoriteList.setAdapter(adapter);
++            }
++
++            @Override
++            public void onCancelled(@NonNull DatabaseError error) {
++                // Handle error
++            }
++        });
++    }
++}
+diff --git a/app/src/main/java/com/example/baitaplon/MainActivity.java b/app/src/main/java/com/example/baitaplon/MainActivity.java
+index 60b280f..e87f672 100644
+--- a/app/src/main/java/com/example/baitaplon/MainActivity.java
++++ b/app/src/main/java/com/example/baitaplon/MainActivity.java
+@@ -74,11 +74,17 @@ private ActivityMainBinding binding;
+                 startActivity(intent);
+             }
+         });
+-        binding.btSearch.setOnClickListener(new View.OnClickListener() {
++        binding.btnSearch.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                Intent intent = new Intent(MainActivity.this, Search.class);
+-                startActivity(intent);
++                String text = binding.edtSearch.getText().toString().trim();
++                if (!text.isEmpty()) {
++                    Intent intent = new Intent(MainActivity.this, Search.class);
++                    intent.putExtra("searchText", text);
++                    startActivity(intent);
++                } else {
++                    binding.edtSearch.setError("Vui lòng nhập từ khóa tìm kiếm!");
++                }
+             }
+         });
+         binding.btnProfile.setOnClickListener(new View.OnClickListener() {
+@@ -88,6 +94,13 @@ private ActivityMainBinding binding;
+                 startActivity(intent);
+             }
+         });
++        binding.cart.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Intent intent = new Intent(MainActivity.this, FavoriteList.class);
++                startActivity(intent);
++            }
++        });
+ 
+       /*  binding.iconTrangchu.setOnClickListener(new View.OnClickListener() {
+             @Override
+diff --git a/app/src/main/java/com/example/baitaplon/Search.java b/app/src/main/java/com/example/baitaplon/Search.java
+index 20a4c6a..22bbf73 100644
+--- a/app/src/main/java/com/example/baitaplon/Search.java
++++ b/app/src/main/java/com/example/baitaplon/Search.java
+@@ -50,8 +50,15 @@ public class Search extends AppCompatActivity {
+         databaseReference = FirebaseDatabase.getInstance().getReference("Blogs");
+         houseTypeReference = FirebaseDatabase.getInstance().getReference("houseType");
+ 
+-        setupHouseTypeSpinner();
+-        loadAllBlogs();
++        String keyword = getIntent().getStringExtra("searchText");
++
++        if (keyword != null && !keyword.isEmpty()) {
++            performSearch(keyword); // Gọi tìm kiếm với từ khóa
++            setupHouseTypeSpinner();
++        }else{
++            setupHouseTypeSpinner();
++            loadAllBlogs();
++        }
+ 
+         searchButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -60,6 +67,32 @@ public class Search extends AppCompatActivity {
+             }
+         });
+     }
++    private void performSearch(String keyword) {
++        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
++            @Override
++            public void onDataChange(DataSnapshot snapshot) {
++                searchResultsList.clear();
++                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
++                    Blog blog = dataSnapshot.getValue(Blog.class);
++                    if (blog != null && blog.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
++                        searchResultsList.add(blog);
++                    }
++                }
++
++                // Kiểm tra kết quả
++                if (searchResultsList.isEmpty()) {
++                    Toast.makeText(Search.this, "Không tìm thấy kết quả phù hợp", Toast.LENGTH_SHORT).show();
++                }
++                searchResultsAdapter.notifyDataSetChanged();
++            }
++
++            @Override
++            public void onCancelled(DatabaseError error) {
++                Toast.makeText(Search.this, "Lỗi khi tải dữ liệu từ Firebase", Toast.LENGTH_SHORT).show();
++            }
++        });
++    }
++
+     private void loadAllBlogs() {
+         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+@@ -101,7 +134,6 @@ public class Search extends AppCompatActivity {
+                 }
+                 adapter.notifyDataSetChanged();
+             }
+-
+             @Override
+             public void onCancelled(DatabaseError error) {
+                 Toast.makeText(Search.this, "Lỗi khi tải loại nhà từ Firebase", Toast.LENGTH_SHORT).show();
+diff --git a/app/src/main/res/drawable/bell.png b/app/src/main/res/drawable/bell.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..cf0d35d110761822fe81a93b730591b42a4a0d58
+GIT binary patch
+literal 276
+zcmeAS@N?(olHy`uVBq!ia0vp^5+KaM1|%Pp+x`GjoCO|{#S9GG!XV7ZFl!D-#W7D8
+z$B>FSZ>Jb?9dZzGy<Exh_RP7+F9vMU>(iwU9<onZx~y~UQ6ItEQ&p3i7Nkw)l_+^|
+z_`sq1&*_PaUZiJf{hlGBu6~`JUE*NZl(myzH%lJ>W?<B{WX?X836C;ZxW8XJ`{$7G
+z;s>XGL^f!aJ=UB2Ir}r$B`r=(ef!z>|GP}AVD3q}E#h!U`ajE|>&F<L9+JOs=Z@81
+z#<B`+sXWPtSITX_?ASEt8<)btU8P1rDO;JRZ#Ao8wz$qv$<Huvy1)~a8LaFzxpx_^
+XU-;@(bIKzH=pzPCS3j3^P6<r_tzU48
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/drawable/listloved.png b/app/src/main/res/drawable/listloved.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..96f05e30284f8fdf71418e96f75d43f94cf25f84
+GIT binary patch
+literal 376
+zcmV-;0f+vHP)<h;3K|Lk000e1NJLTq000;O000;W1^@s6;CDUv00009a7bBm000XU
+z000XU0RWnu7ytkPDoI2^RCt`dlrc&}K@f&V%nfW(S&Ef!hLHN{4MgWx(L(S5mI2RT
+zWk5(L9>c;LhzAfYv=uBxF!M%MLQL{BFE813VY+|5Z+DhmqW@mrM$<Dra?y@6PCeV*
+z^gM5ra(UkHY;Ws36SASFjph{a_KFFvjnOXzK3c|jcF}`jmT_pTFTdpaCb$Z$ad-=>
+z#(0`+C;>#zLsjNj9|LoER1@4+H5E0>7<UdVlM7B_!;3*V<Cu(bn@V7U8#2+iWCGS#
+zGQmeW0p2Oxc)}4qggfXZ6kL*T?5`Q)Gr@TJ-r89oyi7fdEpXA!&r2p+GDbJz?z@3G
+z{#^u#=tTs0uLO@Jv1#x{B{mCuUWwI#*Ok~j@L46c2)s&SG2nkmqQWO7N#LWBy6`U$
+WPo@BB0%-*R0000<MNUMnLSTXbQkMb%
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/src/main/res/layout/activity_detail_blog.xml b/app/src/main/res/layout/activity_detail_blog.xml
+index df95f92..62f7fa8 100644
+--- a/app/src/main/res/layout/activity_detail_blog.xml
++++ b/app/src/main/res/layout/activity_detail_blog.xml
+@@ -46,15 +46,22 @@
+                 android:layout_marginTop="15dp"
+                 android:text="Chi tiết thông tin "
+                 android:textColor="@color/pimary"/>
+-
+             <ImageView
+-                android:id="@+id/btnSaveBlog"
++                android:id="@+id/btnWishlist"
+                 android:layout_width="30dp"
+                 android:layout_height="30dp"
+                 android:src="@drawable/wishlist"
+                 android:layout_marginStart="130dp"
+-                android:layout_marginRight="30dp"
+-                />
++                android:layout_marginRight="30dp" />
++
++            <ImageView
++                android:id="@+id/btnListLoved"
++                android:layout_width="30dp"
++                android:layout_height="30dp"
++                android:src="@drawable/listloved"
++                android:visibility="gone"
++                android:layout_marginStart="130dp"
++                android:layout_marginRight="30dp" />
+         </LinearLayout>
+ 
+             <ImageView
+diff --git a/app/src/main/res/layout/activity_favorite_list.xml b/app/src/main/res/layout/activity_favorite_list.xml
+new file mode 100644
+index 0000000..5298c9c
+--- /dev/null
++++ b/app/src/main/res/layout/activity_favorite_list.xml
+@@ -0,0 +1,75 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/main"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    tools:context=".FavoriteList">
++
++    <ScrollView
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:orientation="vertical">
++
++            <!-- Back Button and Title -->
++            <LinearLayout
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:orientation="horizontal"
++                android:layout_margin="16dp"
++                android:gravity="center_vertical">
++
++                <ImageView
++                    android:id="@+id/btnBack"
++                    android:layout_width="22dp"
++                    android:layout_height="22dp"
++                    android:src="@drawable/baseline_arrow_back_24"
++                    app:tint="@color/pimary" />
++
++                <TextView
++                    android:id="@+id/FavoriteListBlog"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:layout_marginStart="8dp"
++                    android:textSize="20sp"
++                    android:textStyle="bold"
++                    android:text="Danh sách bài đăng yêu thích"
++                    android:textColor="@color/pimary" />
++            </LinearLayout>
++
++            <!-- Content Section (RecyclerView and ProgressBar) -->
++            <androidx.constraintlayout.widget.ConstraintLayout
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_margin="12dp">
++
++                <ProgressBar
++                    android:id="@+id/progressBar"
++                    style="?android:attr/progressBarStyle"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    app:layout_constraintBottom_toBottomOf="@+id/recyclerFavoriteList"
++                    app:layout_constraintEnd_toEndOf="parent"
++                    app:layout_constraintStart_toStartOf="@+id/recyclerFavoriteList"
++                    app:layout_constraintTop_toTopOf="@+id/recyclerFavoriteList"
++                    android:visibility="gone" />
++
++                <androidx.recyclerview.widget.RecyclerView
++                    android:id="@+id/recyclerFavoriteList"
++                    android:layout_width="match_parent"
++                    android:layout_height="wrap_content"
++                    app:layout_constraintBottom_toBottomOf="parent"
++                    app:layout_constraintEnd_toEndOf="parent"
++                    app:layout_constraintStart_toStartOf="parent"
++                    app:layout_constraintTop_toTopOf="parent" />
++            </androidx.constraintlayout.widget.ConstraintLayout>
++
++        </LinearLayout>
++    </ScrollView>
++</androidx.constraintlayout.widget.ConstraintLayout>
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+index 3bb8b79..65c0a3c 100644
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -36,7 +36,16 @@
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                    />
+-
++                <ImageView
++                    android:id="@+id/btnNotification"
++                    android:layout_width="30dp"
++                    android:layout_height="30dp"
++                    android:layout_marginEnd="64dp"
++                    android:src="@drawable/bell"
++                    app:layout_constraintBottom_toBottomOf="parent"
++                    app:layout_constraintEnd_toEndOf="parent"
++                    app:layout_constraintTop_toTopOf="parent"
++                    app:layout_constraintVertical_bias="0.0" />
+                 <ImageView
+                     android:id="@+id/btnLogout"
+                     android:layout_width="30dp"
+diff --git a/app/src/main/res/layout/viewholder_favorite.xml b/app/src/main/res/layout/viewholder_favorite.xml
+new file mode 100644
+index 0000000..431add9
+--- /dev/null
++++ b/app/src/main/res/layout/viewholder_favorite.xml
+@@ -0,0 +1,138 @@
++<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_margin="8dp"
++    app:cardCornerRadius="15dp"
++    android:background="@color/white"
++    app:cardElevation="3dp">
++
++    <androidx.constraintlayout.widget.ConstraintLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:background="@color/white">
++
++        <!-- Image Section -->
++        <ImageView
++            android:id="@+id/img"
++            android:layout_width="170dp"
++            android:layout_height="140dp"
++            android:layout_marginEnd="10dp"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="parent"
++            app:layout_constraintBottom_toBottomOf="parent"
++            android:scaleType="centerCrop"
++            android:contentDescription="Image" />
++
++        <!-- Text Section -->
++        <LinearLayout
++            android:layout_margin="10dp"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:orientation="vertical"
++            app:layout_constraintStart_toEndOf="@id/img"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintTop_toTopOf="parent"
++            android:layout_marginStart="15dp"
++            app:layout_constraintBottom_toBottomOf="parent">
++
++            <TextView
++                android:id="@+id/titleBlog"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_marginBottom="8dp"
++                android:text="Title"
++                android:textSize="15sp"
++                android:textStyle="bold"
++                android:textColor="@color/black" />
++
++            <LinearLayout
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:orientation="horizontal"
++                android:layout_marginBottom="5dp"
++                android:gravity="center_vertical">
++
++                <ImageView
++                    android:layout_width="20dp"
++                    android:layout_height="20dp"
++                    android:src="@drawable/location"
++                    android:layout_marginEnd="4dp"
++                    app:tint="@color/grey2" />
++
++                <TextView
++                    android:id="@+id/address"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:text="Địa chỉ"
++                    android:textColor="@color/grey2"
++                    android:textSize="13sp" />
++            </LinearLayout>
++
++            <LinearLayout
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:orientation="horizontal"
++                android:layout_marginTop="5dp"
++                android:gravity="center_vertical">
++
++                <ImageView
++                    android:layout_width="20dp"
++                    android:layout_height="20dp"
++                    android:src="@drawable/size"
++                    android:layout_marginEnd="4dp"
++                    app:tint="@color/black" />
++
++                <TextView
++                    android:id="@+id/areaText"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:text="20m"
++                    android:textColor="@color/black"
++                    android:textSize="15sp" />
++            </LinearLayout>
++
++            <LinearLayout
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:orientation="horizontal"
++                android:layout_marginTop="5dp"
++                android:gravity="center_vertical">
++
++                <ImageView
++                    android:layout_width="20dp"
++                    android:layout_height="20dp"
++                    android:src="@drawable/dollar"
++                    android:layout_marginEnd="4dp"
++                    app:tint="@color/black" />
++
++                <TextView
++                    android:id="@+id/price_txt"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    android:text="30,000 VNĐ"
++                    android:textColor="@color/red"
++                    android:textSize="15sp"
++                    android:textStyle="bold" />
++            </LinearLayout>
++            <ImageView
++                android:id="@+id/btnListLoved"
++                android:layout_width="30dp"
++                android:layout_height="30dp"
++                android:src="@drawable/listloved"
++                android:layout_marginStart="150dp"
++                android:layout_marginRight="30dp" />
++
++            <ImageView
++                android:id="@+id/btnWishlist"
++                android:layout_width="30dp"
++                android:layout_height="30dp"
++                android:src="@drawable/wishlist"
++                android:visibility="gone"
++                android:layout_marginStart="150dp"
++                android:layout_marginRight="30dp" />
++
++
++        </LinearLayout>
++    </androidx.constraintlayout.widget.ConstraintLayout>
++</androidx.cardview.widget.CardView>
+-- 
+2.42.0.windows.2
+

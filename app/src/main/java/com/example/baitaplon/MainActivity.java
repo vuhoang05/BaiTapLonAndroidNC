@@ -74,30 +74,17 @@ private ActivityMainBinding binding;
                 startActivity(intent);
             }
         });
-        binding.btnSearch.setOnClickListener(new View.OnClickListener() {
+        binding.btSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text = binding.edtSearch.getText().toString().trim();
-                if (!text.isEmpty()) {
-                    Intent intent = new Intent(MainActivity.this, Search.class);
-                    intent.putExtra("searchText", text);
-                    startActivity(intent);
-                } else {
-                    binding.edtSearch.setError("Vui lòng nhập từ khóa tìm kiếm!");
-                }
+                Intent intent = new Intent(MainActivity.this, Search.class);
+                startActivity(intent);
             }
         });
         binding.btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-        binding.cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, FavoriteList.class);
                 startActivity(intent);
             }
         });
