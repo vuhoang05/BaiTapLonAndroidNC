@@ -49,9 +49,9 @@ public class DetailBlog extends AppCompatActivity {
     private Button buttonCall, buttonText, btnLocation, btnBooking;
     private String contactNumber;
 
-    private ImageView image,btnBack,btnWishlist,btnListLoved;
-    private Button buttonCall, buttonText, btnLocation;
-    private String contactNumber,imageUrl;
+    private ImageView btnWishlist,btnListLoved;
+
+    private String imageUrl;
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
