@@ -21,6 +21,11 @@
             android:name=".BookingListActivity"
             android:exported="false" />
         <activity
+
+            android:name=".FavoriteList"
+            android:exported="false" />
+        <activity
+
             android:name=".BookViewingRoom"
             android:exported="false" />
         <activity

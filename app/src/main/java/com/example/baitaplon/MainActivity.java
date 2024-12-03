@@ -74,6 +74,14 @@ private ActivityMainBinding binding;
                 startActivity(intent);
             }
         });
+        binding.btSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Search.class);
+                startActivity(intent);
+            }
+        });
+
         binding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
